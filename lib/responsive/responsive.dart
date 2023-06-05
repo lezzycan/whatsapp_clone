@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 class ResponsiveLayout extends StatelessWidget {
   const ResponsiveLayout(
       {super.key,
-      required this.moileScreenLayout,
+      required this.mobileScreenLayout,
       required this.webScreenLayout});
-  final Widget moileScreenLayout;
+  final Widget mobileScreenLayout;
   final Widget webScreenLayout;
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class ResponsiveLayout extends StatelessWidget {
         if (constraints.maxWidth > 900) {
           return webScreenLayout;
         }
-        return moileScreenLayout;
+        return mobileScreenLayout;
       },
     );
   }

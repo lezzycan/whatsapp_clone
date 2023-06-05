@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:whatsapp_clone_app/constants/colors.dart';
+import 'package:whatsapp_clone_app/responsive/responsive.dart';
+import 'package:whatsapp_clone_app/screens/mobile_screen.dart';
+import 'package:whatsapp_clone_app/screens/web_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+  ).then(
+    (_) => runApp(
+      ScreenUtilInit(
+        designSize: ScreenUtil.defaultSize,
+        minTextAdapt: true,
+        builder: ((_, __) => const MyApp()),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -13,11 +30,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark().copyWith(
-        colorScheme: const ColorScheme.dark(background: backgroundColor)
+        scaffoldBackgroundColor: backgroundColor,
+        // colorScheme: const ColorScheme.dark(background: backgroundColor)
       ),
-
-      
+      home: const ResponsiveLayout(
+          mobileScreenLayout: MobileScreen(), webScreenLayout: WebScreen()),
     );
   }
 }
-
