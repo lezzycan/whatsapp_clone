@@ -1,7 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:whatsapp_clone_app/constants/colors.dart';
+import 'package:whatsapp_clone_app/responsive/responsive.dart';
+import 'package:whatsapp_clone_app/screens/mobile_screen.dart';
+import 'package:whatsapp_clone_app/screens/web_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: [SystemUiOverlay.top, SystemUiOverlay.bottom],
+  ).then(
+    (_) => runApp(
+      ScreenUtilInit(
+        designSize: ScreenUtil.defaultSize,
+        minTextAdapt: true,
+        builder: ((_, __) => const MyApp()),
+      ),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -11,57 +29,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: backgroundColor,
+        // colorScheme: const ColorScheme.dark(background: backgroundColor)
       ),
-      home: const MyHomePage(title: 'Whatsapp clone'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      home: const ResponsiveLayout(
+          mobileScreenLayout: MobileScreen(), webScreenLayout: WebScreen()),
     );
   }
 }
